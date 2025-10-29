@@ -1,0 +1,15 @@
+{
+  "name": "module.4",
+  "version": "1.0.0",
+  "main": "todolist.js",
+  "scripts": {
+    "serve": "serve",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "serve": "^14.2.5"
+  }
+}

@@ -1,0 +1,166 @@
+ @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap");
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f8f9fa;
+      }
+      .card {
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        border-radius: 12px;
+        border: none;
+      }
+      .list-group-item {
+        border-left: 5px solid transparent;
+        border-radius: 8px;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        transition: all 0.3s ease;
+        background-color: white;
+      }
+      .list-group-item.completed {
+        border-left-color: #198754; /* Green for completed */
+        background-color: #e9f8f1;
+        text-decoration: line-through;
+        color: #6c757d;
+      }
+      .list-group-item:not(.completed) {
+        border-left-color: #0d6efd; /* Blue for incomplete */
+      }
+      .task-text {
+        flex-grow: 1;
+        padding-right: 1rem;
+      }
+      .user-id-tag {
+        font-size: 0.7rem;
+        color: #6c757d;
+        background-color: #e9ecef;
+        padding: 2px 6px;
+        border-radius: 4px;
+        margin-top: 5px;
+        display: block;
+        text-align: center;
+      }
+      .form-check-input {
+        margin-right: 1rem;
+        cursor: pointer;
+      }
+#taskInput {
+  width: 250px;
+  padding: 10px 15px;
+  border: 2px solid #00a6a6;
+  border-radius: 20px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+#taskInput:focus {
+  border-color: #007777;
+  box-shadow: 0 0 5px rgba(0, 150, 150, 0.5);
+}
+
+#addTaskBtn {
+  margin-left: 10px;
+  padding: 10px 20px;
+  background-color: #00a6a6;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#addTaskBtn:hover {
+  background-color: #008c8c;
+}
+
+.list-group {
+  list-style: none;
+  padding: 0;
+  margin-top: 30px;
+  width: 100%;
+}
+
+.list-group li {
+  background-color: #ccf2f2;
+  color: #004d4d;
+  padding: 12px 15px;
+  margin-bottom: 10px;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+.list-group li:hover {
+  transform: scale(1.02);
+  background-color: #b3ebeb;
+}
+
+.list-group li button {
+  background: transparent;
+  border: none;
+  color: #007777;
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.list-group li button:hover {
+  color: #004d4d;
+}
+
+.task-item {
+  display: flex;
+  flex-direction: column; /* 👈 stack text and footer vertically */
+  width: 100%;
+  background-color: #ccf2f2;
+  border-radius: 10px;
+  padding: 10px 15px;
+  margin-bottom: 8px;
+  box-sizing: border-box;
+}
+
+/* Task text */
+.task-item span:first-child {
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+  margin-bottom: 6px;
+  color: #004d4d;
+}
+
+/* Footer with timestamp + button side by side */
+.task-footer {
+  display: flex;
+  justify-content: space-between; /* pushes timestamp left, button right */
+  align-items: center;
+  font-size: 0.85em;
+}
+
+/* Timestamp */
+.timestamp {
+  color: #007777;
+  font-style: italic;
+  white-space: nowrap;
+}
+
+/* Complete button */
+.complete-btn {
+  padding: 4px 8px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007777;
+  color: white;
+  cursor: pointer;
+  white-space: nowrap;
+  font-size: 0.85em;
+}
+
+.complete-btn:hover {
+  background-color: #004d4d;
+}
+
+.completed {
+  text-decoration: line-through;
+  color: gray;
+}
