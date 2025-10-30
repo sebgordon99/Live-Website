@@ -87,10 +87,42 @@ function renderTasks() {
 /**
  * READ: Loads tasks from localStorage (Mock GET /todos).
  */
-function fetchAndRenderTasks() {
-  tasks = JSON.parse(localStorage.getItem("tasks"));
 
+async function getTasks() {
+  const url = "http://localhost:3000/tasks";
+  try {
+    const response = await fetch(url);
+      await new Promise((resolve) => {
+      setTimeout(() => {
+        resolve();
+      }, 3000);
+    });
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error(error.message);
+    return [];
+  }
+}
+
+
+function fetchAndRenderTasks() {
+  //load tasks from local storage
+  // tasks = JSON.parse(localStorage.getItem("tasks"));
+
+getTasks().then((result) => {
+
+  tasks = result;
   renderTasks();
+  document.getElementsByClassName("hidden")[0].classList.add('d-none');
+
+});
+
+  
+ 
 }
 
 // --- Mock CRUD Operations ---
@@ -159,7 +191,11 @@ function addTask() {
   };
 
   tasks.unshift(task);
-  localStorage.setItem("tasks", JSON.stringify(tasks));
+  // localStorage.setItem("tasks", JSON.stringify(tasks));
+  fetch("http://localhost:3000/tasks"), {
+    method: "POST",
+    body: JSON.stringify(task),
+  }
 
   taskInput.value = "";
 }
