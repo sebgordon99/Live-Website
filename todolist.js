@@ -35,15 +35,63 @@ function createTaskElement(task) {}
 /**
  * READ: Renders the current state of the tasks array to the DOM.
  */
+
+// retrieve the array of previous tasks
+// for each task of tasks
+// add task to the initial list of tasks, using the given values
 function renderTasks() {
-  // DOM Manipulation: Clear the existing list
+  const taskList = document.getElementById("taskList");
   taskList.innerHTML = "";
+
+  const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+  tasks.forEach((task, index) => {
+    const li = document.createElement("li");
+    li.classList.add("task-item");
+    if (task.completed) li.classList.add("completed");
+
+    const text = document.createElement("span");
+    text.textContent = task.name;
+
+    const footer = document.createElement("div");
+    footer.classList.add("task-footer");
+
+    const timestamp = document.createElement("span");
+    timestamp.classList.add("timestamp");
+    timestamp.textContent = new Date(task.createAt).toLocaleString();
+
+    const btn = document.createElement("button");
+    btn.classList.add("complete-btn");
+    btn.textContent = "Complete";
+
+    btn.addEventListener("click", () => {
+      tasks.splice(index, 1);
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+      renderTasks();
+    });
+
+    text.addEventListener("dblclick", () => {
+      tasks[index].completed = !tasks[index].completed;
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+      renderTasks();
+    });
+
+    footer.appendChild(timestamp);
+    footer.appendChild(btn);
+    li.appendChild(text);
+    li.appendChild(footer);
+    taskList.appendChild(li);
+  });
 }
 
 /**
  * READ: Loads tasks from localStorage (Mock GET /todos).
  */
-function fetchAndRenderTasks() {}
+function fetchAndRenderTasks() {
+  tasks = JSON.parse(localStorage.getItem("tasks"));
+
+  renderTasks();
+}
 
 // --- Mock CRUD Operations ---
 
@@ -70,48 +118,50 @@ function addTask() {
   }
   console.log(taskText);
 
+  const li = document.createElement("li");
+  li.classList.add("task-item", "highlight");
 
-const li = document.createElement("li");
-li.classList.add("task-item", "highlight");
+  const textSpan = document.createElement("span");
+  textSpan.textContent = taskText;
 
+  const now = new Date();
+  const timeString = now.toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+  const timestamp = document.createElement("span");
+  timestamp.classList.add("timestamp");
+  timestamp.textContent = ` (${timeString})`;
 
-const textSpan = document.createElement("span");
-textSpan.textContent = taskText;
+  const completeBtn = document.createElement("button");
+  completeBtn.textContent = "Complete";
+  completeBtn.classList.add("complete-btn");
 
+  completeBtn.addEventListener("click", () => {
+    li.remove();
+  });
 
-const now = new Date();
-const timeString = now.toLocaleTimeString([], { 
-  hour: "2-digit", 
-  minute: "2-digit", 
-  second: "2-digit" 
-});
-const timestamp = document.createElement("span");
-timestamp.classList.add("timestamp");
-timestamp.textContent = ` (${timeString})`;
+  const footer = document.createElement("div");
+  footer.classList.add("task-footer");
+  footer.appendChild(timestamp);
+  footer.appendChild(completeBtn);
 
+  li.appendChild(textSpan);
+  li.appendChild(footer);
 
-const completeBtn = document.createElement("button");
-completeBtn.textContent = "Complete";
-completeBtn.classList.add("complete-btn");
+  taskList.prepend(li);
 
-completeBtn.addEventListener("click", () => {
-  li.remove();
-});
+  const task = {
+    name: taskText,
+    createAt: new Date(),
+    completed: false,
+  };
 
+  tasks.unshift(task);
+  localStorage.setItem("tasks", JSON.stringify(tasks));
 
-const footer = document.createElement("div");
-footer.classList.add("task-footer");
-footer.appendChild(timestamp);
-footer.appendChild(completeBtn);
-
-li.appendChild(textSpan);
-li.appendChild(footer);
-
-
-taskList.prepend(li);
-
-
-taskInput.value = "";
+  taskInput.value = "";
 }
 
 /**
@@ -128,6 +178,15 @@ function deleteTask(id, taskName) {}
 
 // Attach the main event listener to the 'Add Task' button
 addTaskBtn.addEventListener("click", addTask);
-
+document.addEventListener("keydown", function (event) {
+  if (event.key === "Enter") {
+    addTask();
+  }
+});
+taskList.addEventListener("dblclick", function (event) {
+  if (event.target.tagName === "LI") {
+    event.target.classList.toggle("tempFinish");
+  }
+});
 // Initial data load
 fetchAndRenderTasks();
