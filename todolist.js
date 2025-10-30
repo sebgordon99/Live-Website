@@ -43,8 +43,6 @@ function renderTasks() {
   const taskList = document.getElementById("taskList");
   taskList.innerHTML = "";
 
-  const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-
   tasks.forEach((task, index) => {
     const li = document.createElement("li");
     li.classList.add("task-item");
@@ -92,7 +90,7 @@ async function getTasks() {
   const url = "http://localhost:3000/tasks";
   try {
     const response = await fetch(url);
-      await new Promise((resolve) => {
+    await new Promise((resolve) => {
       setTimeout(() => {
         resolve();
       }, 3000);
@@ -108,21 +106,15 @@ async function getTasks() {
   }
 }
 
-
 function fetchAndRenderTasks() {
   //load tasks from local storage
   // tasks = JSON.parse(localStorage.getItem("tasks"));
 
-getTasks().then((result) => {
-
-  tasks = result;
-  renderTasks();
-  document.getElementsByClassName("hidden")[0].classList.add('d-none');
-
-});
-
-  
- 
+  getTasks().then((result) => {
+    tasks = result;
+    renderTasks();
+    document.getElementsByClassName("hidden")[0].classList.add("d-none");
+  });
 }
 
 // --- Mock CRUD Operations ---
@@ -192,10 +184,11 @@ function addTask() {
 
   tasks.unshift(task);
   // localStorage.setItem("tasks", JSON.stringify(tasks));
-  fetch("http://localhost:3000/tasks"), {
-    method: "POST",
-    body: JSON.stringify(task),
-  }
+  fetch("http://localhost:3000/tasks", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(task),
+});
 
   taskInput.value = "";
 }
